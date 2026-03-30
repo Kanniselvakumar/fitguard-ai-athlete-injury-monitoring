@@ -1,10 +1,12 @@
+import logging
+import os
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from .config import Config
-import logging
 
 db = SQLAlchemy()
 migrate = Migrate()
@@ -27,10 +29,12 @@ def create_app(config_class=Config):
         from app import models
         from app.schema_sync import ensure_schema_compatibility
 
+        db.create_all()
         # Apply lightweight legacy schema patches to avoid runtime crashes on old DBs.
         result = ensure_schema_compatibility()
         if result.get("applied"):
             logger.warning("Applied schema compatibility patches: %s", ", ".join(result["applied"]))
+        os.makedirs(app.config.get("UPLOAD_FOLDER", "uploads"), exist_ok=True)
 
     # Register blueprints 
     from .routes.auth import auth_bp

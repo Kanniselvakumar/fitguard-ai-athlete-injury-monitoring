@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { UserCircle2, Trophy, Upload } from 'lucide-react';
 import api from '../api/axios';
+import { resolveApiUrl } from '../api/config';
 import { useAuth } from '../context/AuthContext';
 
 const emptyRecord = {
@@ -129,7 +130,7 @@ const Profile = () => {
           </h2>
           <div className="w-28 h-28 rounded-full overflow-hidden border border-slate-200">
             {profile?.profile?.avatar_path ? (
-              <img src={`http://localhost:5000${profile.profile.avatar_path}`} alt="avatar" className="w-full h-full object-cover" />
+              <img src={resolveApiUrl(profile.profile.avatar_path)} alt="avatar" className="w-full h-full object-cover" />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-slate-400 bg-slate-50">No Image</div>
             )}
@@ -254,4 +255,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
