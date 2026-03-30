@@ -59,6 +59,15 @@ def create_app(config_class=Config):
     app.register_blueprint(planning_bp, url_prefix="/api/planning")
     app.register_blueprint(analytics_bp, url_prefix="/api/analytics")
 
+    @app.route("/")
+    def index():
+        return {
+            "service": "fitguard-api",
+            "status": "running",
+            "health": "/health",
+            "api_base": "/api",
+        }
+
     @app.route('/health')
     def health_check():
         return {'status': 'healthy'}
