@@ -6,6 +6,7 @@ Flask-JWT-Extended==4.6.0
 PyMySQL==1.1.0
 cryptography==42.0.5
 python-dotenv==1.0.1
+gunicorn
 scikit-learn
 pandas
 numpy

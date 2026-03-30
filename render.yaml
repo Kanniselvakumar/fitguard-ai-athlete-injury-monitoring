@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: fitguard-api
+    runtime: python
+    rootDir: fitguard-api
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app --bind 0.0.0.0:$PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: MYSQL_URL
+        sync: false
+      - key: CLAUDE_API_KEY
+        sync: false
+
+  - type: web
+    name: fitguard-frontend
+    runtime: static
+    rootDir: fitguard-frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./fitguard-frontend/dist
+    envVars:
+      - key: NODE_VERSION
+        value: 22.22.0
+      - key: VITE_API_BASE_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
